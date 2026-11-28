@@ -1,6 +1,6 @@
-
 import Link from "next/link";
 import { connection } from "next/server";
+import { Suspense } from "react";
 import { supabaseAdmin } from "../../lib/supabase-admin";
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
   }>;
 };
 
-export default async function LacakLaporan({ searchParams }: Props) {
+async function LacakContent({ searchParams }: Props) {
   await connection();
 
   const { kode } = await searchParams;
@@ -62,9 +62,7 @@ export default async function LacakLaporan({ searchParams }: Props) {
         </button>
       </form>
 
-      {pesan && (
-        <p className="mt-4 text-red-600">{pesan}</p>
-      )}
+      {pesan && <p className="mt-4 text-red-600">{pesan}</p>}
 
       {laporan && (
         <div className="mt-6 rounded-xl border p-5">
@@ -87,5 +85,13 @@ export default async function LacakLaporan({ searchParams }: Props) {
         </div>
       )}
     </main>
+  );
+}
+
+export default function LacakLaporan({ searchParams }: Props) {
+  return (
+    <Suspense fallback={<p className="p-6">Memuat halaman lacak...</p>}>
+      <LacakContent searchParams={searchParams} />
+    </Suspense>
   );
 }
