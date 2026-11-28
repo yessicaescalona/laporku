@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 import { simpanLaporan, type HasilLaporan } from "./actions";
 
@@ -11,7 +12,7 @@ const hasilAwal: HasilLaporan = {
 export default function HalamanLapor() {
   const [hasil, formAction, sedangMengirim] = useActionState(
     simpanLaporan,
-    hasilAwal
+    hasilAwal,
   );
 
   return (
@@ -148,12 +149,12 @@ export default function HalamanLapor() {
           </button>
 
           <div className="text-center">
-            <a
+            <Link
               href="/"
               className="text-sm font-medium text-blue-600 hover:text-blue-800"
             >
               Kembali ke Beranda
-            </a>
+            </Link>
           </div>
         </form>
       </div>
