@@ -3,8 +3,15 @@ import { connection } from "next/server";
 import { Suspense } from "react";
 import { supabaseAdmin } from "../../lib/supabase-admin";
 
-async function LaporanContent() {
+type Props = {
+  searchParams: Promise<{ q?: string }>;
+};
+
+async function LaporanContent({ searchParams }: Props) {
   await connection();
+
+  const { q } = await searchParams;
+  const kataKunci = q?.trim() ?? "";
 
   const { data: laporan, error } = await supabaseAdmin
     .from("laporan")
@@ -30,6 +37,14 @@ async function LaporanContent() {
     .from("kategori")
     .select("id, nama");
 
+  const hasilPencarian = (laporan ?? []).filter((item) => {
+    const judul = item.judul.toLowerCase();
+    const kode = item.kode.toLowerCase();
+    const pencarian = kataKunci.toLowerCase();
+
+    return judul.includes(pencarian) || kode.includes(pencarian);
+  });
+
   return (
     <main className="min-h-screen bg-blue-50 px-6 py-10">
       <div className="mx-auto max-w-5xl">
@@ -49,9 +64,45 @@ async function LaporanContent() {
           </Link>
         </header>
 
-        <div className="mt-8 grid gap-5 md:grid-cols-2">
-          {laporan && laporan.length > 0 ? (
-            laporan.map((item) => {
+        <form
+          action="/laporan"
+          method="GET"
+          className="mt-8 flex flex-col gap-3 sm:flex-row"
+        >
+          <input
+            type="text"
+            name="q"
+            defaultValue={kataKunci}
+            placeholder="Cari berdasarkan judul atau kode laporan..."
+            className="w-full rounded-xl border border-blue-200 bg-white px-4 py-3 text-gray-800 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+          />
+
+          <button
+            type="submit"
+            className="rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700"
+          >
+            Cari
+          </button>
+
+          {kataKunci && (
+            <Link
+              href="/laporan"
+              className="rounded-xl border border-blue-200 bg-white px-6 py-3 text-center font-semibold text-blue-700 hover:bg-blue-50"
+            >
+              Reset
+            </Link>
+          )}
+        </form>
+
+        <p className="mt-5 text-sm text-gray-600">
+          {kataKunci
+            ? `Ditemukan ${hasilPencarian.length} laporan untuk "${kataKunci}".`
+            : `Total laporan: ${hasilPencarian.length}`}
+        </p>
+
+        <div className="mt-5 grid gap-5 md:grid-cols-2">
+          {hasilPencarian.length > 0 ? (
+            hasilPencarian.map((item) => {
               const namaKategori = kategori?.find(
                 (k) => k.id === item.kategori_id,
               )?.nama;
@@ -103,7 +154,9 @@ async function LaporanContent() {
             })
           ) : (
             <p className="rounded-xl bg-white p-6 text-gray-600 shadow-sm">
-              Belum ada laporan kerusakan.
+              {kataKunci
+                ? "Laporan yang kamu cari tidak ditemukan."
+                : "Belum ada laporan kerusakan."}
             </p>
           )}
         </div>
@@ -112,7 +165,7 @@ async function LaporanContent() {
   );
 }
 
-export default function HalamanLaporan() {
+export default function HalamanLaporan({ searchParams }: Props) {
   return (
     <Suspense
       fallback={
@@ -123,7 +176,7 @@ export default function HalamanLaporan() {
         </main>
       }
     >
-      <LaporanContent />
+      <LaporanContent searchParams={searchParams} />
     </Suspense>
   );
 }
