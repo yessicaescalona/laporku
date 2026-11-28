@@ -4,7 +4,8 @@ import { connection } from "next/server";
 import { Suspense } from "react";
 import { supabaseAdmin } from "../../../lib/supabase-admin";
 import { pastikanAdmin } from "../../../lib/sesi";
-import { simpanKategori, hapusKategori } from "./actions";
+import { simpanKategori } from "./actions";
+import TombolHapus from "./tombol-hapus";
 
 type Props = {
   searchParams: Promise<{ pesan?: string }>;
@@ -125,20 +126,7 @@ async function KategoriContent({ searchParams }: Props) {
                     </p>
                   </div>
 
-                  <form action={hapusKategori}>
-                    <input
-                      type="hidden"
-                      name="id"
-                      value={item.id}
-                    />
-
-                    <button
-                      type="submit"
-                      className="rounded-lg bg-red-50 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-100"
-                    >
-                      Hapus
-                    </button>
-                  </form>
+                  <TombolHapus id={item.id} nama={item.nama} />
                 </div>
               ))}
             </div>
