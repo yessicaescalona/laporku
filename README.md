@@ -1,36 +1,110 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LaporKu
 
-## Getting Started
+## 1. Deskripsi Aplikasi
 
-First, run the development server:
+LaporKu adalah aplikasi berbasis web yang digunakan untuk melaporkan kerusakan fasilitas sekolah. Aplikasi ini membantu siswa dan warga sekolah menyampaikan laporan kerusakan agar dapat ditindaklanjuti oleh petugas.
+
+## 2. Fitur Aplikasi
+
+- Melihat daftar laporan kerusakan fasilitas sekolah.
+- Melihat detail laporan berdasarkan kode laporan.
+- Membuat laporan kerusakan fasilitas sekolah.
+- Memberikan dukungan pada laporan.
+- Melacak perkembangan laporan menggunakan kode laporan.
+- Login dan logout petugas.
+- Mengelola kategori laporan.
+- Mengubah status laporan menjadi baru, diproses, dan selesai.
+- Memberikan tanggapan terhadap laporan.
+
+## 3. Teknologi yang Digunakan
+
+- Next.js 16
+- React
+- TypeScript
+- Tailwind CSS
+- Supabase
+- PostgreSQL
+- Git dan GitHub
+- Vercel
+
+## 4. Struktur Database
+
+Database LaporKu menggunakan Supabase dengan tiga tabel utama:
+
+- `kategori`: menyimpan kategori kerusakan fasilitas.
+- `laporan`: menyimpan informasi laporan kerusakan.
+- `dukungan`: menyimpan data dukungan pengunjung terhadap laporan.
+
+Struktur dan script database dapat dilihat pada file `database.sql`.
+
+## 5. Cara Instalasi
+
+Pastikan Node.js sudah terpasang di komputer.
+
+Clone repository:
+
+```bash
+git clone URL_REPOSITORY_KAMU
+```
+
+Masuk ke folder proyek:
+
+```bash
+cd laporku
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+## 6. Konfigurasi Environment
+
+Buat file `.env.local` di folder utama proyek.
+
+Isi dengan variabel berikut:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+SUPABASE_SECRET_KEY=
+ADMIN_PASSWORD=
+SESSION_SECRET=
+```
+
+Isi setiap variabel menggunakan konfigurasi milik project Supabase dan pengaturan admin.
+
+Jangan membagikan isi `.env.local` atau mengunggahnya ke GitHub.
+
+## 7. Menjalankan Aplikasi
+
+Jalankan server pengembangan:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka browser dan akses:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```text
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Untuk membuat versi production:
 
-## Learn More
+```bash
+npm run build
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 8. Keamanan Aplikasi
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Menggunakan Row Level Security (RLS) pada database.
+- Menggunakan Supabase Secret Key melalui kode server.
+- Melindungi halaman admin menggunakan sesi.
+- Memvalidasi data laporan sebelum disimpan.
+- Membatasi dukungan agar satu pengunjung tidak memberikan dukungan berulang pada laporan yang sama.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 9. Deployment
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Aplikasi dapat di-deploy menggunakan Vercel dengan menghubungkan repository GitHub dan mengatur environment variables pada pengaturan proyek Vercel.
