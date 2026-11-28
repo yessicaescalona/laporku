@@ -59,11 +59,11 @@ export default function HalamanLapor() {
               className="w-full rounded-lg border border-gray-300 p-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
             >
               <option value="">Pilih kategori</option>
-              <option value="1">AC</option>
-              <option value="2">Proyektor</option>
-              <option value="3">Kran Air</option>
-              <option value="4">Kursi</option>
-              <option value="5">Lainnya</option>
+              <option value="2">AC Rusak</option>
+              <option value="3">Proyektor</option>
+              <option value="4">Keran Air</option>
+              <option value="5">Kursi</option>
+              <option value="6">Lampu</option>
             </select>
             {hasil.galat?.kategori && (
               <p className="mt-1 text-sm text-red-600">
